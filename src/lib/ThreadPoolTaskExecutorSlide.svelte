@@ -19,7 +19,9 @@
     taskQueueBox.initTasks(initialTaskNumber)
     threadPoolBox.initThreads(2)
     stage = 'code'
-    code.selectLines`*`
+    if (code !== undefined) {
+      await code.selectLines`*`
+    }
     await queueSizeTracking.to(taskQueueBox.getTaskCount())
   }}
 >
@@ -59,7 +61,9 @@ public Executor taskExecutor() {
 
   <Action
     do={async () => {
-      await code.selectLines`5-7'`
+      if (code !== undefined) {
+        await code.selectLines`5-7'`
+      }
     }}
   />
 
