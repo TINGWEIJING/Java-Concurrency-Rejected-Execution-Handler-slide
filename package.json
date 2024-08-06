@@ -1,5 +1,5 @@
 {
-	"name": "animotion",
+	"name": "java-concurrency-rejected-execution-handler-slide",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -10,6 +10,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.2.0",
+		"@sveltejs/adapter-static": "^3.0.2",
 		"@sveltejs/kit": "^2.5.8",
 		"@sveltejs/vite-plugin-svelte": "^3.1.0",
 		"@types/reveal.js": "^5.0.3",

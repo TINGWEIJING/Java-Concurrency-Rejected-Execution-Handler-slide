@@ -1,11 +1,12 @@
 <script lang="ts">
-	import '../styles/app.css'
+  import '../styles/app.css'
 
-	let { children } = $props()
+  let { children } = $props()
+  export const prerender = true
 </script>
 
 <svelte:head>
-	<title>Animotion</title>
+  <title>Java Concurrency: Rejected Execution Handler</title>
 </svelte:head>
 
 {@render children()}

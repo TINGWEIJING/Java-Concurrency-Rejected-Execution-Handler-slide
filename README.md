@@ -1,5 +1,5 @@
 # Animotion Template
-
+<!-- TODO (WJ): Update -->
 This is an Animotion presentation.
 
 ## Setup
