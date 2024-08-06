@@ -1,18 +1,18 @@
 <script lang="ts">
   import ThreadPoolBox from '$lib/ThreadPoolBox.svelte'
   import TaskQueueBox from '$lib/TaskQueueBox.svelte'
+  import SupplyAsyncSlide from '$lib/SupplyAsyncSlide.svelte'
+  import EnableAsyncSlide from '$lib/EnableAsyncSlide.svelte'
+  import EnableAsyncSlide02 from '$lib/EnableAsyncSlide02.svelte'
   import FixedThreadPoolSlide from '$lib/FixedThreadPoolSlide.svelte'
   import ThreadPoolTaskExecutorSlide from '$lib/ThreadPoolTaskExecutorSlide.svelte'
+  import RejectedExecutionHandlerSlide from '$lib/RejectedExecutionHandlerSlide.svelte'
+  import AbortPolicySlide from '$lib/AbortPolicySlide.svelte'
+  import AbortPolicySlide02 from '$lib/AbortPolicySlide02.svelte'
+  import CallerRunsPolicy from '$lib/CallerRunsPolicy.svelte'
+  import CallerRunsPolicy02 from '$lib/CallerRunsPolicy02.svelte'
   import { Presentation, Slide, Code, Transition, Action } from '@animotion/core'
   import { tween } from '@animotion/motion'
-
-  let text: HTMLParagraphElement
-  let code: Code
-  let circle = tween({ x: 0, y: 80, r: 80, fill: '#00ffff' })
-  let items = $state([1, 2, 3, 4])
-  let layout = $state('flex gap-4')
-  let taskQueueBox: TaskQueueBox
-  let firstThreadPoolBox: ThreadPoolBox
 </script>
 
 <Presentation
@@ -35,161 +35,104 @@
     </div>
   </Slide>
 
+  <SupplyAsyncSlide />
+  <EnableAsyncSlide />
+  <EnableAsyncSlide02 />
+
   <Slide class="slide-container">
     <div class="title-layout column-layout">
-      <p class="title">ExecutorService</p>
+      <p class="title">Executor</p>
       <p class="normal-03">
-        Java interface that provides methods to manage the lifecycle of task execution, including
-        asynchronous task submission, tracking progress, and orderly shutdown.
+        Java interface that provides methods for managing the execution of asynchronous tasks in a
+        concurrent environment.
       </p>
     </div>
   </Slide>
 
   <Slide class="slide-container">
     <div class="title-layout column-layout">
-      <p class="title">ExecutorService</p>
-      <p class="normal-03">Implemented Java classes:</p>
+      <p class="title">Executor</p>
+      <p class="normal-03">Common use:</p>
       <div>
         <ol>
-          <li>FixedThreadPool</li>
-          <li>ThreadPoolTaskExecutor</li>
+          <li class="normal-02">Executors.newFixedThreadPool()</li>
+          <li class="normal-02">new ThreadPoolTaskExecutor()</li>
         </ol>
       </div>
     </div>
   </Slide>
   <FixedThreadPoolSlide />
   <ThreadPoolTaskExecutorSlide />
+  <RejectedExecutionHandlerSlide />
 
-  <Slide
-    out={() => {
-      taskQueueBox.initTasks(5)
-    }}
-    class="slide-container"
-  >
-    <TaskQueueBox bind:this={taskQueueBox} />
-    <ThreadPoolBox bind:this={firstThreadPoolBox} />
-    <Action
-      do={async () => {
-        taskQueueBox.initTasks(5)
-        firstThreadPoolBox.initThreads(2)
-      }}
-    />
-    <Action
-      do={async () => {
-        for (let index = 0; index < 2; index++) {
-          const taskId = taskQueueBox.submitTask()
-          if (taskId !== undefined) {
-            firstThreadPoolBox.addTask(taskId)
-          }
-        }
-      }}
-    />
-    <Action
-      do={async () => {
-        firstThreadPoolBox.spawnThread()
-        const taskId = taskQueueBox.submitTask()
-        firstThreadPoolBox.addTask(taskId)
-      }}
-    />
+  <AbortPolicySlide />
+  <AbortPolicySlide02 />
+  <CallerRunsPolicy />
+  <CallerRunsPolicy02 />
+
+  <Slide class="slide-container">
+    <p class="title-top">Other Policies</p>
+    <div class="point-form-flex-container center-highlight-container">
+      <ol start="3">
+        <li class="normal-01">
+          Discard Policy
+          <ul style="list-style-type:disc;">
+            <li class="normal-02">Similar to Abort Policy, but without throwing exception</li>
+          </ul>
+        </li>
+        <li class="normal-01">
+          Discard Oldest Policy <ul style="list-style-type:disc;">
+            <li class="normal-02">Discard oldest task to make space for new task</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
   </Slide>
 
-  <Slide on:out={() => circle.reset()} class="h-full place-content-center place-items-center">
-    <Transition>
-      <p bind:this={text} class="title font-bold drop-shadow-sm">🪄 Animotion</p>
-    </Transition>
-
-    <Transition do={() => text.classList.replace('text-8xl', 'text-6xl')} class="mt-16">
-      <Code
-        bind:this={code}
-        lang="ts"
-        theme="poimandres"
-        code={`
-					async function animate() {
-						// ...
-					}
-				`}
-        options={{ duration: 600, stagger: 0.3, containerStyle: false }}
-      />
-    </Transition>
-
-    <Transition class="mt-16">
-      <svg width="560" height={$circle.r * 2} viewBox="-80 0 560 {$circle.r * 2}">
-        <circle cx={$circle.x} cy={$circle.y} r={$circle.r} fill={$circle.fill} />
-        <text
-          x={$circle.x}
-          y={$circle.y}
-          font-size={$circle.r * 0.4}
-          font-family="JetBrains Mono"
-          text-anchor="middle"
-          dominant-baseline="middle"
-        >
-          {$circle.x.toFixed(0)}
-        </text>
-      </svg>
-    </Transition>
-
-    <Action
-      do={async () => {
-        await code.update`
-					async function animate() {
-						await circle.to({ x: 400, fill: '#ffff00' })
-					}
-				`
-        await code.selectLines`2`
-        await circle.to({ x: 400, fill: '#ffff00' })
-      }}
-    />
-
-    <Action
-      do={async () => {
-        await code.update`
-					async function animate() {
-						await circle.to({ x: 400, fill: '#ffff00' })
-						await circle.to({ x: 0, fill: '#00ffff' })
-					}
-				`
-        await code.selectLines`3`
-        await circle.to({ x: 0, fill: '#00ffff' })
-      }}
-    />
-
-    <Action do={() => code.selectLines`*`} />
+  <Slide class="slide-container">
+    <p class="title-top">Key Takeaway</p>
+    <div class="point-form-flex-container center-highlight-container">
+      <ol>
+        <li class="normal-01">
+          <b>Executors.newFixedThreadPool()</b>
+          <ul style="list-style-type:disc;">
+            <li class="normal-03">Short-lived tasks or IO tasks with a timeout only</li>
+            <li class="normal-03">Potentially causing OOM error</li>
+          </ul>
+        </li>
+        <li class="normal-01">
+          <b>new ThreadPoolTaskExecutor()</b>
+          <ul style="list-style-type:disc;">
+            <li class="normal-03">
+              Abort Policy (default) -> Ensure try-catch TaskRejectedException
+            </li>
+            <li class="normal-03">
+              Caller Runs Policy -> Guarantees execution but may slow down the request thread
+            </li>
+          </ul>
+        </li>
+      </ol>
+    </div>
   </Slide>
 
-  <Slide class="h-full place-content-center place-items-center">
-    <Transition>
-      <p class="text-6xl font-bold drop-shadow-sm">🪄 Layout Animations</p>
-    </Transition>
-
-    <Transition class="mt-16">
-      <div class={layout}>
-        {#each items as item (item)}
-          <Transition
-            class="grid h-[180px] w-[180px] place-content-center rounded-2xl border-t-2 border-white bg-gray-200 text-6xl font-semibold text-black shadow-2xl"
-            enter="rotate"
-            visible
-          >
-            {item}
-          </Transition>
-        {/each}
-      </div>
-    </Transition>
-
-    <Transition do={() => (layout = 'grid grid-cols-2 grid-rows-2 gap-4')} />
-    <Transition do={() => (items = [4, 3, 2, 1])} />
-    <Transition do={() => (items = [2, 1, 4, 3])} />
-    <Transition do={() => (items = [4, 3, 2, 1])} />
-    <Transition do={() => (items = [1, 2, 3, 4])} />
-    <Transition do={() => (layout = 'flex gap-4')} />
-  </Slide>
-
-  <Slide class="h-full place-content-center place-items-center">
-    <p class="mt-8 text-6xl font-bold">🪄 Animotion</p>
-    <p class="mt-16 text-3xl">
-      Learn more by reading the
-      <a class="underline" href="https://animotion.pages.dev/docs" target="_blank">
-        Animotion docs
-      </a>.
-    </p>
+  <Slide class="slide-container">
+    <p class="title-top">Future Exploration</p>
+    <div class="point-form-flex-container center-highlight-container">
+      <ol>
+        <li class="normal-01">
+          <b>Observability & Tuning</b>
+          <ul style="list-style-type:disc;">
+            <li class="normal-03">Custom RejectedExecutionHandler</li>
+            <li class="normal-03">Surface values via Java Management Extensions (JMX)</li>
+          </ul>
+        </li>
+        <li class="normal-01">
+          <b>Explore how Tomcat/Jetty handle IO request</b>
+        </li>
+        <li class="normal-01">
+          <b>Dynamically update ThreadPoolTaskExecutor</b>
+        </li>
+      </ol>
+    </div>
   </Slide>
 </Presentation>

@@ -73,6 +73,10 @@ ol li {
   margin-bottom: calc(0.04 * var(--slide-max-height));
 }
 
+li ul {
+  margin-top: calc(0.03 * var(--slide-max-height));
+}
+
 ::view-transition-group(*) {
   animation-duration: 0.6s;
   animation-timing-function: var(--ease);
@@ -129,11 +133,18 @@ ol li {
   width: 100%;
   justify-content: center;
   align-items: center;
-  gap: calc(0.06 * var(--slide-max-height));
 }
 
 .column-layout {
+  display: flex;
   flex-direction: column;
+  gap: calc(0.06 * var(--slide-max-height));
+}
+
+.column-layout-small {
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.04 * var(--slide-max-height));
 }
 
 .bottom-offset {
@@ -161,9 +172,37 @@ ol li {
   font-size: calc(0.03 * var(--slide-max-height)) !important;
 }
 
+.medium-code {
+  font-size: calc(0.034 * var(--slide-max-height)) !important;
+}
+
+.large-code {
+  font-size: calc(0.04 * var(--slide-max-height)) !important;
+}
+
 .slide-container {
   height: 100%;
   width: max-content;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+.max-width-flex-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.point-form-flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  padding-left: 14%;
+  padding-right: 10%;
+  gap: calc(0.02 * var(--slide-max-height));
+  text-align: left;
 }
 
 .top-left-container {
@@ -175,11 +214,34 @@ ol li {
   max-width: 60%;
 }
 
+.center-highlight-container {
+  position: absolute;
+  top: 13%;
+  height: 87%; /* TODO (WJ): remove? */
+}
+
 .task-queue-box {
   position: absolute;
   min-width: 50%;
   height: 14%;
   right: 40%;
+  bottom: 8%;
+  display: flex;
+  background-color: rebeccapurple;
+  border-radius: calc(0.04 * var(--slide-max-height));
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding: 0 2% 0 2%;
+}
+
+.task-queue-box-alt {
+  position: absolute;
+  min-width: 50%;
+  height: 14%;
+  right: 24%;
   bottom: 8%;
   display: flex;
   background-color: rebeccapurple;

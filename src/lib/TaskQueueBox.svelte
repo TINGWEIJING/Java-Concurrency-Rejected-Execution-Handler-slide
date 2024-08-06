@@ -7,8 +7,9 @@
 
   interface TaskQueueBoxProps {
     initialTaskCount?: number
+    div_class?: string
   }
-  let { initialTaskCount }: TaskQueueBoxProps = $props()
+  let { initialTaskCount, div_class = 'task-queue-box' }: TaskQueueBoxProps = $props()
   let tasks: Task[] = $state([])
   let taskCounter: number = $state(0)
 
@@ -48,7 +49,7 @@
   export { initTasks, addTask, submitTask, getTaskCount }
 </script>
 
-<div class="task-queue-box">
+<div class={div_class}>
   {#each tasks as task (task.id)}
     <div
       class="task-circle"
